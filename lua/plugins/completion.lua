@@ -18,6 +18,7 @@ return {
     config = function()
       local cmp = require("cmp")
       local luasnip = require("luasnip")
+      local copilot_suggestion = require("copilot.suggestion")
 
       require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -35,12 +36,19 @@ return {
             select = true,
           }),
 
+          -- SMART TAB MAPPING: Works for autocomplete list AND Copilot text
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
+              -- 1. If the autocomplete menu is open, step down the menu
               cmp.select_next_item()
+            elseif copilot_suggestion.is_visible() then
+              -- 2. If an AI suggestion is showing as gray text, accept it!
+              copilot_suggestion.accept()
             elseif luasnip.expand_or_jumpable() then
+              -- 3. If in a code snippet, jump forward
               luasnip.expand_or_jump()
             else
+              -- 4. Otherwise, behave like a normal tab key
               fallback()
             end
           end, { "i", "s" }),

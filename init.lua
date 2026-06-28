@@ -9,6 +9,7 @@ vim.opt.expandtab = true
 vim.opt.termguicolors = true
 vim.opt.splitright = true
 vim.opt.splitbelow = true
+vim.opt.clipboard = "unnamedplus"
 
 -- Lazy.nvim bootstrap
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
